@@ -13,7 +13,7 @@ async def do_stuff(cortex):
     print("** REQUEST ACCESS **")
     await cortex.request_access()
     print("** AUTHORIZE **")
-    await cortex.authorize()
+    await cortex.authorize(debit=10000)
     print("** GET LICENSE INFO **")
     await cortex.get_license_info()
     print("** QUERY HEADSETS **")

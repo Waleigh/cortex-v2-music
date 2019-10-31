@@ -72,7 +72,6 @@ class Cortex():
 				"clientId": self.user['client_id'], 
 				"clientSecret": self.user['client_secret'], 
 				"license": self.user['license'],
-				"debit": self.user['debit']
 			},
 			"id": AUTHORIZE_ID
 		}
@@ -455,10 +454,9 @@ class Cortex():
 # ---------------------------------------------------
 url = "wss://localhost:6868"
 user = {
-	"license" : "your license",
-	"client_id" : "your client id",
-	"client_secret" : "your client ",
-	"debit" : 100,
+	"license" : "",
+	"client_id" : "i9Jaz80QSLTH36WMMJykXBtoy1jX1wuItPzjFQXT",
+	"client_secret" : "G4GZsrqm6ZPXgtOVjstzK87YLObiUI6uPwbOMvpwPBuvY4pCbNbbBrB1ofqzmLV4tLM56vWV50tGdpk2FfiNoDAOUw3yag7iJ215vxtRyBRLEHcteOxjZ2hkvuFLviLb",
 	"number_row_data" : 10
 }
 
@@ -473,7 +471,7 @@ record_length_s = 60 * 1
 record_marker_numbers = record_length_s
 
 # export parameter
-record_export_folder = 'C:\\export'
+record_export_folder = 'C:\\Users\\night\\Desktop\\cortex-v2-example-master\\python'
 record_export_data_types = ['EEG', 'MOTION', 'PM', 'BP']
 record_export_format = 'CSV'
 record_export_version = 'V2'
