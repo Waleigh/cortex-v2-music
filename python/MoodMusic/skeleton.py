@@ -101,7 +101,12 @@ def main():
     net = getNetwork()
     outputs = ['angry', 'excited', 'focused', 'happy',  'relaxed', 'sad']
     training = 'training_data.txt'
-    inputs = 'input_data.txt'
+    inputs = [0.25,
+                  0.73,
+                  0.11,
+                  0.55,
+                  0.96,
+                  0.75]
 
     '''insert lines to get input data if not importing data'''
 
