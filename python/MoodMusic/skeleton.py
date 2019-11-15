@@ -1,5 +1,5 @@
 from network import *
-import os
+import json
 
 """Use this as a general framework to use the Network class.
 To change the number of layers in a new network, change the layers list in line 24
@@ -21,8 +21,8 @@ def getNetwork():
     try:
         return loadNetwork()
     except:
-        layers = [6, 6]  # input, output, 6 nodes in each
-        return newNetwork(layers)
+        """input, output, 6 nodes in each"""
+        return newNetwork()
 
 
 def loadNetwork():
@@ -30,30 +30,37 @@ def loadNetwork():
     data, creates a new network and overwrites the weights and biases with the
     previously saved data (since the new network is randomly generated, this changes
     the new network into the one that was previously used). """
-    n = open('network_info.txt', 'r')
-    w = open('weights.txt', 'r')
-    b = open('biases.txt', 'r')
-    info = []
-    for line in n.readlines():
-        info.append(line)
-    print(info)
-    net = Network(info[0])
+
+    #n = getData('network_info.txt')
+    n = np.array(json.loads(open('network_info.txt', 'r').read().replace(' ', ",")))
+    print(n)
+    print(type(n))
+    w = np.array(json.loads(open('weights.txt', 'r').read().replace(' ', ",")))
+    print(w)
+    print(type(w))
+    b = np.array(json.loads(open('biases.txt', 'r').read().replace(' ', ",")))
+    print(b)
+    print(type(b))
+    net = Network(n)
     net.biases = b
     net.weights = w
     return net
 
+def getData(filename):
+    file = open('network_info.txt', 'r')
+    contents = file.read()
+    print("CONTENTS:", contents)
+    replaced = contents.replace(' ', ',')
+    print("REPLACED:", replaced)
+    return np.array(json.loads(replaced))
 
-def newNetwork(layers):
+
+def newNetwork(layers=np.array([6, 6])):
     """Creates and returns a new network based on the number of layers specified
     in the list. Also creates three files that contain the data of the network.
     The files are used to reload the network when the program is ran again."""
     net = Network(layers)
-    with open('network_info.txt', 'w') as n:
-        n.write(str(net.sizes))
-    with open('weights.txt', 'w') as w:
-        w.write(str(net.weights))
-    with open('biases.txt', 'w') as b:
-        b.write(str(net.biases))
+    saveNetwork(net)
     return net
 
 
@@ -77,42 +84,39 @@ def trainNetwork(net, training='training_data.txt', inputs=None, iterations=5, r
                 train_data.append(line)
             mini_batch_size = len(train_data) / iterations
             net.SGD(train_data, iterations, mini_batch_size, rate, inputs)
-        saveNetwork(net)
     except:
         print("Input proper Training Data")
+    saveNetwork(net)
 
 
 def saveNetwork(net):
     """Saves the data of the network necessary to recreate the network.
     All previous data on the network is removed, so there is no history
     of the network saved."""
-    os.remove('network_info.txt')
-    os.remove('weights.txt')
-    os.remove('biases.txt')
-    with open('network_info.txt', 'w') as n:
-        n.write(net.sizes)
-    with open('weights.txt', 'w') as w:
-        w.write(net.weights)
-    with open('biases.txt', 'w') as b:
-        b.write(net.biases)
+    writeData('network_info.txt', net.sizes)
+    writeData('weights.txt', net.weights)
+    writeData('biases.txt', net.biases)
 
+'''
+Assumes data is an array of numpy arrays
+'''
+def writeData(filename, data):
+    with open(filename, 'w') as f:
+        f.write(np.array_str(data))
 
 def main():
-    net = getNetwork()
+    #net = newNetwork()
+    #net = getNetwork()
+    net = loadNetwork()
     outputs = ['angry', 'excited', 'focused', 'happy',  'relaxed', 'sad']
-    training = 'training_data.txt'
-    inputs = [0.25,
-                  0.73,
-                  0.11,
-                  0.55,
-                  0.96,
-                  0.75]
+    """training = 'training_data.txt'"""
+    inputs = np.array([0.25, 0.73, 0.11, 0.55, 0.96, 0.75])
 
     '''insert lines to get input data if not importing data'''
-
-    # iterations =
+    
+    """"# iterations =
     # rate =
-    trainNetwork(net, training, inputs)
+    trainNetwork(net, training, inputs)"""
 
     output_node_index = net.get_output_index(inputs)
     print(output_node_index)

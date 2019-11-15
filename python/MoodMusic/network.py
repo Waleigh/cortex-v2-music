@@ -4,27 +4,38 @@ import numpy as np
 
 class Network(object):
 
-    def __init__(self, sizes):
+    def __init__(self, sizes, weights=None, biases=None):
         """The list ``sizes`` contains the number of neurons in each layers of the network.
         For example, if the list was [2, 3, 1] then it would be a three-layer network, with
         the first (input) layer containing 2 neurons, the second (1st hidden) layer 3 neurons,
         and the third (output) layer 1 neuron. The biases and weights for the network are
         initialized randomly, using a Gaussian distribution with mean 0, and variance 1.
         No biases are imposed on the first layer."""
+        print("Sizes:", sizes[0])
         self.num_layers = len(sizes)
         self.sizes = sizes
-        for y in sizes[1:]:
-            self.biases = [np.random.randn(y, 1)]
-        self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
-        self.weights = [np.random.randn(y, x)
-                        for x, y in zip(sizes[:-1], sizes[1:])]
+        self.biases = self.random_biases() if biases is None else biases
+        self.weights = self.random_weights() if weights is None else weights
+
+    def random_biases(self):
+        return np.array([np.random.randn(y, 1) for y in self.sizes[1:]])
+
+    def random_weights(self):
+        return np.array([np.random.randn(y, x)
+                         for x, y in zip(self.sizes[:-1], self.sizes[1:])])
 
     def output(self, a):
         """Return the output of the network if ``a`` is input.  Output is returned as a column
         vector of all outputs. A separate function is needed to determine which is/are used."""
+        print("Output")
+        
         for b, w in zip(self.biases, self.weights):
+            print("a:", type(a), a)
+            print("b:", type(b), b)
+            print("w:", type(w), w)
             a = sigmoid(np.dot(w, a)+b)
-        return a
+            
+        return a #sigmoid(np.dot(self.weights, a) + self.biases)
 
     def get_output_index(self, inputs):
         a = self.output(inputs)[-1]
