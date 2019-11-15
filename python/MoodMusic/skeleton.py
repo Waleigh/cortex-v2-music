@@ -31,27 +31,21 @@ def loadNetwork():
     previously saved data (since the new network is randomly generated, this changes
     the new network into the one that was previously used). """
 
-    #n = getData('network_info.txt')
-    n = np.array(json.loads(open('network_info.txt', 'r').read().replace(' ', ",")))
+    n = getData('network_info.txt')
     print(n)
-    print(type(n))
-    w = np.array(json.loads(open('weights.txt', 'r').read().replace(' ', ",")))
+    w = getData('weights.txt')
     print(w)
-    print(type(w))
-    b = np.array(json.loads(open('biases.txt', 'r').read().replace(' ', ",")))
+    b = getData('biases.txt')
     print(b)
-    print(type(b))
     net = Network(n)
     net.biases = b
     net.weights = w
     return net
 
 def getData(filename):
-    file = open('network_info.txt', 'r')
+    file = open(filename, 'r')
     contents = file.read()
-    print("CONTENTS:", contents)
-    replaced = contents.replace(' ', ',')
-    print("REPLACED:", replaced)
+    replaced = ', '.join(contents.replace('[ ', '[').split())
     return np.array(json.loads(replaced))
 
 
