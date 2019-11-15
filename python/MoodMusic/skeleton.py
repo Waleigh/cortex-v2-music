@@ -1,5 +1,4 @@
 from network import *
-import os
 
 """Use this as a general framework to use the Network class.
 To change the number of layers in a new network, change the layers list in line 24
@@ -21,7 +20,8 @@ def getNetwork():
     try:
         return loadNetwork()
     except:
-        layers = [6, 6]  # input, output, 6 nodes in each
+        layers = [6, 6]
+        """input, output, 6 nodes in each"""
         return newNetwork(layers)
 
 
@@ -36,7 +36,6 @@ def loadNetwork():
     info = []
     for line in n.readlines():
         info.append(line)
-    print(info)
     net = Network(info[0])
     net.biases = b
     net.weights = w
@@ -48,12 +47,7 @@ def newNetwork(layers):
     in the list. Also creates three files that contain the data of the network.
     The files are used to reload the network when the program is ran again."""
     net = Network(layers)
-    with open('network_info.txt', 'w') as n:
-        n.write(str(net.sizes))
-    with open('weights.txt', 'w') as w:
-        w.write(str(net.weights))
-    with open('biases.txt', 'w') as b:
-        b.write(str(net.biases))
+    saveNetwork(net)
     return net
 
 
@@ -77,42 +71,34 @@ def trainNetwork(net, training='training_data.txt', inputs=None, iterations=5, r
                 train_data.append(line)
             mini_batch_size = len(train_data) / iterations
             net.SGD(train_data, iterations, mini_batch_size, rate, inputs)
-        saveNetwork(net)
     except:
         print("Input proper Training Data")
+    saveNetwork(net)
 
 
 def saveNetwork(net):
     """Saves the data of the network necessary to recreate the network.
     All previous data on the network is removed, so there is no history
     of the network saved."""
-    os.remove('network_info.txt')
-    os.remove('weights.txt')
-    os.remove('biases.txt')
     with open('network_info.txt', 'w') as n:
-        n.write(net.sizes)
+        n.write(str(net.sizes))
     with open('weights.txt', 'w') as w:
-        w.write(net.weights)
+        w.write(str(net.weights))
     with open('biases.txt', 'w') as b:
-        b.write(net.biases)
+        b.write(str(net.biases))
 
 
 def main():
     net = getNetwork()
     outputs = ['angry', 'excited', 'focused', 'happy',  'relaxed', 'sad']
-    training = 'training_data.txt'
-    inputs = [0.25,
-                  0.73,
-                  0.11,
-                  0.55,
-                  0.96,
-                  0.75]
+    """training = 'training_data.txt'"""
+    inputs = [0.25, 0.73, 0.11, 0.55, 0.96, 0.75]
 
     '''insert lines to get input data if not importing data'''
-
-    # iterations =
+    
+    """"# iterations =
     # rate =
-    trainNetwork(net, training, inputs)
+    trainNetwork(net, training, inputs)"""
 
     output_node_index = net.get_output_index(inputs)
     print(output_node_index)
