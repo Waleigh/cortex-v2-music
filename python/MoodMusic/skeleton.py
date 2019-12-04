@@ -136,7 +136,7 @@ def main():
         output = outputs[output_node_index]
         print("\nI believe you are feeling " + output)
 
-        feeling = input("\nWhat emotion are you feeling? (Choose one):\nAngry\nExcited\nFocused" +
+        feeling = input("\nHow are you feeling? (Choose one):\nAngry\nExcited\nFocused" +
                         "\nHappy\nRelaxed\nSad\n")
         correctout = fixer(feeling, outputs)
         superlearn(net, inputs, correctout)
